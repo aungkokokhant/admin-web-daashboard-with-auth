@@ -1,0 +1,522 @@
+/* =====================================================
+   AKMART ADMIN GLOBAL CSS
+   Single source of truth for all admin pages
+===================================================== */
+
+/* -------------------------------
+   CSS VARIABLES (THEME)
+-------------------------------- */
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --bg: #f8fafc;
+    --sidebar-bg: #0f172a;
+    --sidebar-text: #cbd5f5;
+    --sidebar-active: #2563eb;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e5e7eb;
+}
+
+/* -------------------------------
+   RESET & BASE
+-------------------------------- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+        sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* -------------------------------
+   LAYOUT
+-------------------------------- */
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-page-content {
+    padding: 24px;
+}
+
+/* -------------------------------
+   PAGE TITLES
+-------------------------------- */
+.admin-page-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.admin-page-subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 20px;
+}
+
+/* -------------------------------
+   CARDS
+-------------------------------- */
+.admin-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+/* -------------------------------
+   BUTTONS
+-------------------------------- */
+.admin-btn {
+    display: inline-block;
+    padding: 8px 14px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+}
+
+.admin-btn-primary {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.admin-btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.admin-btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.admin-btn-danger {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+/* -------------------------------
+   TABLES
+-------------------------------- */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    font-size: 14px;
+}
+
+.admin-table th {
+    background: #f1f5f9;
+    font-weight: 600;
+}
+
+/* -------------------------------
+   BADGES
+-------------------------------- */
+.admin-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 999px;
+}
+
+.admin-badge-active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.admin-badge-inactive {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+/* -------------------------------
+   FORMS
+-------------------------------- */
+.admin-form-group {
+    margin-bottom: 16px;
+}
+
+.admin-form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.admin-form-group input,
+.admin-form-group textarea,
+.admin-form-group select {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+}
+
+.admin-form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.admin-form-row > div {
+    flex: 1;
+}
+
+/* -------------------------------
+   SIDEBAR
+-------------------------------- */
+.admin-sidebar {
+    width: 240px;
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    padding: 20px;
+}
+
+.admin-sidebar-title {
+    color: #ffffff;
+    font-size: 20px;
+    margin-bottom: 30px;
+    letter-spacing: -0.5px;
+}
+
+.admin-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-nav li {
+    margin-bottom: 8px;
+}
+
+.admin-nav a {
+    display: block;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.15s ease;
+}
+
+.admin-nav a:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.admin-nav a.active {
+    background: var(--sidebar-active);
+    color: #ffffff;
+}
+
+/* -------------------------------
+   TOPBAR
+-------------------------------- */
+.admin-topbar {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-topbar-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.admin-user-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 14px;
+}
+
+.admin-user-name {
+    color: var(--text);
+}
+
+.admin-logout-btn {
+    border: none;
+    background: none;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+}
+
+.admin-logout-btn:hover {
+    text-decoration: underline;
+}
+
+/* -------------------------------
+   DASHBOARD
+-------------------------------- */
+.admin-dashboard-header {
+    margin-bottom: 24px;
+}
+
+.admin-dashboard-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+}
+
+.admin-dashboard-subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+}
+
+/* Stats Grid */
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* Stat Card */
+.admin-stat-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.admin-stat-card h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+}
+
+.admin-stat-card p {
+    margin-top: 8px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+/* -------------------------------
+   ADMIN LOGIN
+-------------------------------- */
+.admin-login-body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.admin-login-card {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.admin-login-brand {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.admin-login-brand h1 {
+    font-size: 24px;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.admin-login-brand p {
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.admin-error-box {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.admin-login-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background 0.15s,
+        transform 0.05s;
+}
+
+.admin-login-btn:hover {
+    background: var(--primary-dark);
+}
+
+.admin-login-btn:active {
+    transform: translateY(1px);
+}
+
+.admin-login-footer {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* -------------------------------
+   PAGINATION
+-------------------------------- */
+.admin-pagination {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.admin-page {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    background: #ffffff;
+}
+
+.admin-page:hover {
+    background: var(--bg);
+}
+
+.admin-page.active {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+}
+
+.admin-page.disabled {
+    color: var(--muted);
+    cursor: not-allowed;
+    background: #f1f5f9;
+}
+
+.admin-page.dots {
+    border: none;
+    background: transparent;
+}
+
+/* -------------------------------
+   STATUS BADGES (PROMOTIONS)
+-------------------------------- */
+.admin-badge-draft {
+    background: #e5e7eb; /* grey */
+    color: #374151;
+}
+
+.admin-badge-expired {
+    background: #fee2e2; /* light red */
+    color: #991b1b;
+}
+
+/* -------------------------------
+   PASSWORD TOGGLE
+-------------------------------- */
+.admin-password-wrapper {
+    position: relative;
+}
+
+.admin-password-wrapper input {
+    padding-right: 42px;
+}
+
+.admin-password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--muted);
+}
+
+.admin-password-toggle:hover {
+    color: var(--text);
+}
+
+/* ===============================
+   Voucher Status Badges
+================================ */
+.admin-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+    line-height: 1;
+}
+
+/* Status colors */
+.admin-badge-unused {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.admin-badge-assigned {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.admin-badge-redeemed {
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+.admin-badge-expired {
+    background: #ffedd5;
+    color: #9a3412;
+}
+
+.admin-badge-revoked {
+    background: #fee2e2;
+    color: #991b1b;
+}
