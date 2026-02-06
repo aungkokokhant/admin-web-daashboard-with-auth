@@ -8,7 +8,7 @@
     <div>
         <div class="admin-page-title">Shops</div>
         <div class="admin-page-subtitle">
-            Manage shops inside AKMart
+            Manage shops inside Gift Voucher System.
         </div>
     </div>
 

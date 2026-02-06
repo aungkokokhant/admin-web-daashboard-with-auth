@@ -10,7 +10,7 @@
     </h1>
 
     <p class="admin-dashboard-subtitle">
-        This is the AKMart Gift Voucher System admin dashboard.
+        This is the Gift Voucher System admin dashboard.
     </p>
 </div>
 

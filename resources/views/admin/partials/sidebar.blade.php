@@ -1,5 +1,5 @@
 <aside class="admin-sidebar">
-    <h2 class="admin-sidebar-title">AKMart</h2>
+    <h2 class="admin-sidebar-title">Gift Voucher System</h2>
 
     <ul class="admin-nav">
         <li>

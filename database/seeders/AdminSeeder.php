@@ -13,19 +13,19 @@ class AdminSeeder extends Seeder
         $admins = [
             [
                 'name' => 'Super Admin',
-                'email' => 'admin@akmart.com',
+                'email' => 'admin@giftvouchersystem.com',
                 'password' => Hash::make('password123'),
                 'status' => 'active',
             ],
             [
                 'name' => 'Operations Admin',
-                'email' => 'ops@akmart.com',
+                'email' => 'ops@giftvouchersystem.com',
                 'password' => Hash::make('password123'),
                 'status' => 'active',
             ],
             [
                 'name' => 'Finance Admin',
-                'email' => 'finance@akmart.com',
+                'email' => 'finance@giftvouchersystem.com',
                 'password' => Hash::make('password123'),
                 'status' => 'active',
             ],

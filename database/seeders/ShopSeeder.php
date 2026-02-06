@@ -15,7 +15,7 @@ class ShopSeeder extends Seeder
             Shop::updateOrCreate(
                 ['shop_code' => 'SHOP' . str_pad($i, 3, '0', STR_PAD_LEFT)],
                 [
-                    'shop_name' => 'AKMart Shop ' . $i,
+                    'shop_name' => 'TEST SHOP' . $i,
                     'phone' => '09123456' . str_pad($i, 2, '0', STR_PAD_LEFT),
                     'password' => Hash::make('shop12345'),
                     'status' => 'active',
