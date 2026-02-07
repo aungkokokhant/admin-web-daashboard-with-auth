@@ -33,9 +33,11 @@
 
 
         <li>
-            <a href="#">
-                Reports
-            </a>
-        </li>
+    <a href="{{ route('admin.reports.voucher-redemptions') }}"
+       class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
+        Reports
+    </a>
+</li>
+
     </ul>
 </aside>

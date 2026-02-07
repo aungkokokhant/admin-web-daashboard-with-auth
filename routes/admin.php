@@ -3,9 +3,11 @@
 use App\Enums\PromotionStatus;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\GiftVoucherController;
+use App\Http\Controllers\Api\V1\Shop\ReportController;
 use App\Models\Promotion;
 use App\Models\Shop;
 use Carbon\Carbon;
@@ -121,5 +123,16 @@ Route::middleware('auth:admin')->group(function () {
             '/{voucher}/download-qr',
             [GiftVoucherController::class, 'downloadQr']
         )->name('download-qr');
+    });
+
+    Route::prefix('reports')->name('reports.')->group(function () {
+
+        Route::get('/voucher-redemptions', [AdminReportController::class, 'voucherRedemptions'])
+            ->name('voucher-redemptions');
+
+        Route::get(
+            '/voucher-redemptions/shop/{shop}',
+            [AdminReportController::class, 'shopVoucherRedemptions']
+        )->name('voucher-redemptions.shop');
     });
 });
