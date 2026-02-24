@@ -10,76 +10,160 @@ use Illuminate\Http\Request;
 
 class AdminReportController extends Controller
 {
+
     public function voucherRedemptions(Request $request)
     {
-        // Month filter (YYYY-MM)
-        $month = $request->get('report_month')
-            ? Carbon::createFromFormat('Y-m', $request->report_month)
-            : Carbon::now();
+        // Validate request
+        $request->validate([
+            'start_date' => ['nullable', 'date'],
+            'end_date'   => ['nullable', 'date', 'after_or_equal:start_date'],
+        ]);
 
-        $start = $month->copy()->startOfMonth();
-        $end   = $month->copy()->endOfMonth();
+        // If no dates provided → default to current month
+        if ($request->start_date && $request->end_date) {
 
-        // Get all redemptions of selected month
-        $redemptions = VoucherRedemption::with('shop')
+            $start = Carbon::parse($request->start_date)->startOfDay();
+            $end   = Carbon::parse($request->end_date)->endOfDay();
+        } else {
+
+            $start = Carbon::now()->startOfMonth();
+            $end   = Carbon::now()->endOfMonth();
+        }
+
+
+        // Get redemptions between date range
+        $redemptions = VoucherRedemption::with(['shop', 'voucher'])
             ->whereBetween('redeemed_at', [$start, $end])
             ->get();
 
-        // Monthly totals
+        $totalDiscount = $redemptions->sum('discount_amount');
+
+        $totalGiftDiscount = $redemptions
+            ->filter(fn($r) => $r->voucher && !$r->voucher->re_sellable)
+            ->sum('discount_amount');
+
+        $totalResellDiscount = $redemptions
+            ->filter(fn($r) => $r->voucher && $r->voucher->re_sellable)
+            ->sum('discount_amount');
+
+        $totalPayoutAmount = $redemptions
+            ->filter(fn($r) => $r->payout_status)
+            ->sum('discount_amount');
+
+        $remainingPayoutAmount = $totalDiscount - $totalPayoutAmount;
+
         $monthlySummary = [
-            'total_count'      => $redemptions->count(),
-            'original_total'   => $redemptions->sum('original_amount'),
-            'discount_total'   => $redemptions->sum('discount_amount'),
-            'final_total'      => $redemptions->sum('final_amount'),
+            'total_count'            => $redemptions->count(),
+            'original_total'         => $redemptions->sum('original_amount'),
+            'discount_total'         => $totalDiscount,
+            'final_total'            => $redemptions->sum('final_amount'),
+
+            'gift_discount_total'    => $totalGiftDiscount,
+            'resell_discount_total'  => $totalResellDiscount,
+            'payout_total'           => $totalPayoutAmount,
+            'remaining_payout_total' => $remainingPayoutAmount,
         ];
 
-        // Group by shop
         $shops = $redemptions
             ->groupBy('shop_id')
             ->map(function ($items) {
+
+                $totalDiscount = $items->sum('discount_amount');
+
+                $giftDiscount = $items
+                    ->filter(fn($r) => $r->voucher && !$r->voucher->re_sellable)
+                    ->sum('discount_amount');
+
+                $resellDiscount = $items
+                    ->filter(fn($r) => $r->voucher && $r->voucher->re_sellable)
+                    ->sum('discount_amount');
+
+                $payoutTotal = $items
+                    ->filter(fn($r) => $r->payout_status)
+                    ->sum('discount_amount');
+
                 return [
-                    'shop'            => $items->first()->shop,
-                    'total_count'     => $items->count(),
-                    'original_total'  => $items->sum('original_amount'),
-                    'discount_total'  => $items->sum('discount_amount'),
-                    'final_total'     => $items->sum('final_amount'),
+                    'shop'                   => $items->first()->shop,
+                    'total_count'            => $items->count(),
+                    'original_total'         => $items->sum('original_amount'),
+                    'discount_total'         => $totalDiscount,
+                    'final_total'            => $items->sum('final_amount'),
+
+                    'gift_discount_total'    => $giftDiscount,
+                    'resell_discount_total'  => $resellDiscount,
+                    'payout_total'           => $payoutTotal,
+                    'remaining_payout_total' => $totalDiscount - $payoutTotal,
                 ];
             });
 
         return view('admin.reports.voucher-redemptions', [
-            'month'           => $month,
-            'monthlySummary'  => $monthlySummary,
-            'shops'           => $shops,
+            'start'          => $start,
+            'end'            => $end,
+            'monthlySummary' => $monthlySummary,
+            'shops'          => $shops,
         ]);
     }
 
     public function shopVoucherRedemptions(Request $request, Shop $shop)
     {
-        $month = $request->get('report_month')
-            ? Carbon::createFromFormat('Y-m', $request->report_month)
-            : Carbon::now();
+        // Validate
+        $request->validate([
+            'start_date' => ['nullable', 'date'],
+            'end_date'   => ['nullable', 'date', 'after_or_equal:start_date'],
+        ]);
 
-        $start = $month->copy()->startOfMonth();
-        $end   = $month->copy()->endOfMonth();
+        // Date handling
+        if ($request->start_date && $request->end_date) {
+            $start = Carbon::parse($request->start_date)->startOfDay();
+            $end   = Carbon::parse($request->end_date)->endOfDay();
+        } else {
+            $start = Carbon::now()->startOfMonth();
+            $end   = Carbon::now()->endOfMonth();
+        }
 
-        // Get shop voucher redemptions
+        // Get redemptions
         $redemptions = VoucherRedemption::with('voucher')
             ->where('shop_id', $shop->id)
             ->whereBetween('redeemed_at', [$start, $end])
             ->orderByDesc('redeemed_at')
             ->get();
 
-        // Summary
+        /*
+    |--------------------------------------------------------------------------
+    | Financial Calculations
+    |--------------------------------------------------------------------------
+    */
+
+        $totalDiscount = $redemptions->sum('discount_amount');
+
+        $giftDiscount = $redemptions
+            ->filter(fn($r) => $r->voucher && !$r->voucher->re_sellable)
+            ->sum('discount_amount');
+
+        $resellDiscount = $redemptions
+            ->filter(fn($r) => $r->voucher && $r->voucher->re_sellable)
+            ->sum('discount_amount');
+
+        $payoutTotal = $redemptions
+            ->filter(fn($r) => $r->payout_status)
+            ->sum('discount_amount');
+
         $summary = [
-            'total_count'     => $redemptions->count(),
-            'original_total'  => $redemptions->sum('original_amount'),
-            'discount_total'  => $redemptions->sum('discount_amount'),
-            'final_total'     => $redemptions->sum('final_amount'),
+            'total_count'            => $redemptions->count(),
+            'original_total'         => $redemptions->sum('original_amount'),
+            'discount_total'         => $totalDiscount,
+            'final_total'            => $redemptions->sum('final_amount'),
+
+            'gift_discount_total'    => $giftDiscount,
+            'resell_discount_total'  => $resellDiscount,
+            'payout_total'           => $payoutTotal,
+            'remaining_payout_total' => $totalDiscount - $payoutTotal,
         ];
 
         return view('admin.reports.shop-voucher-redemptions', [
             'shop'        => $shop,
-            'month'       => $month,
+            'start'       => $start,
+            'end'         => $end,
             'summary'     => $summary,
             'redemptions' => $redemptions,
         ]);

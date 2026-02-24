@@ -7,7 +7,6 @@ use App\Models\GiftVoucher;
 use App\Models\Promotion;
 use App\Enums\VoucherType;
 use App\Enums\VoucherStatus;
-use App\Models\VoucherRedemption;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Support\VoucherCrypto;
@@ -16,12 +15,12 @@ use Illuminate\Support\Facades\Log;
 use ZipArchive;
 use Throwable;
 
-class GiftVoucherController extends Controller
+class ResellVoucherController extends Controller
 {
     public function index(Request $request)
     {
         // Only non-resellable vouchers
-        $query = GiftVoucher::where('re_sellable', false);
+        $query = GiftVoucher::where('re_sellable', true);
 
         // 🔍 Search by voucher code
         if ($request->filled('code')) {
@@ -54,8 +53,9 @@ class GiftVoucherController extends Controller
 
         $promotions = Promotion::orderBy('title')->get();
 
-        return view('admin.vouchers.index', compact('vouchers', 'promotions'));
+        return view('admin.resell-vouchers.index', compact('vouchers', 'promotions'));
     }
+
 
     public function create()
     {
@@ -65,7 +65,7 @@ class GiftVoucherController extends Controller
             ->orderBy('start_date')
             ->get();
 
-        return view('admin.vouchers.create', compact('promotions'));
+        return view('admin.resell-vouchers.create', compact('promotions'));
     }
 
     public function store(Request $request)
@@ -75,7 +75,7 @@ class GiftVoucherController extends Controller
             'voucher_value' => ['required', 'numeric', 'min:0'],
             'max_discount_amount' => ['nullable', 'numeric', 'min:0'],
             'promotion_id' => ['nullable', 'exists:promotions,id'],
-            'expires_at' => ['required', 'date', 'after:today'],
+            'available_days' => ['required', 'integer', 'min:1'],
             'quantity' => ['required', 'integer', 'min:1', 'max:1000'],
         ]);
 
@@ -89,20 +89,20 @@ class GiftVoucherController extends Controller
 
             $voucherCode = $this->generateVoucherCode();
 
-
             $voucher = GiftVoucher::create([
                 'voucher_code' => $voucherCode,
                 'voucher_type' => $data['voucher_type'],
                 'voucher_value' => $data['voucher_value'],
                 'max_discount_amount' => $maxDiscount,
                 'promotion_id' => $data['promotion_id'],
-                'expires_at' => $data['expires_at'],
-                'status' => VoucherStatus::UNUSED,
+                'status' => VoucherStatus::DEACTIVATE,
                 'created_by_admin_id' => auth('admin')->id(),
                 'qr_payload' => $voucherCode, // QR payload generation can be handled separately
-                're_sellable' => false,
-                'available_at' => null,
-                'available_days' => null,
+                're_sellable' => true,
+                'activated_at' => null,
+                'expires_at' => null,
+                'available_days' => $data['available_days'],
+                'activated_by_reseller_id' => null,
             ]);
 
             // 🔐 Encrypt payload
@@ -143,63 +143,6 @@ class GiftVoucherController extends Controller
 
         return response()->download($zipPath)->deleteFileAfterSend(true);
     }
-
-    public function edit(GiftVoucher $voucher)
-    {
-        if ($voucher->status !== VoucherStatus::UNUSED) {
-            return redirect()
-                ->route('admin.vouchers.index')
-                ->with('error', 'Only unused vouchers can be edited.');
-        }
-
-        return view('admin.vouchers.edit', compact('voucher'));
-    }
-
-    public function update(Request $request, GiftVoucher $voucher)
-    {
-        if ($voucher->status !== VoucherStatus::UNUSED) {
-            return redirect()
-                ->route('admin.vouchers.index')
-                ->with('error', 'This voucher can no longer be modified.');
-        }
-
-        $data = $request->validate([
-            'voucher_type' => ['required', 'in:' . implode(',', VoucherType::values())],
-            'voucher_value' => ['required', 'numeric', 'min:0'],
-            'max_discount_amount' => ['nullable', 'numeric', 'min:0'],
-            'expires_at' => ['required', 'date', 'after:today'],
-        ]);
-
-        // Enforce business rule again
-        $data['max_discount_amount'] =
-            $data['voucher_type'] === 'fixed'
-            ? $data['voucher_value']
-            : $data['max_discount_amount'];
-
-        $voucher->update($data);
-
-        return redirect()
-            ->route('admin.vouchers.index')
-            ->with('success', 'Voucher updated successfully.');
-    }
-
-    public function revoke(GiftVoucher $voucher)
-    {
-        if ($voucher->status !== VoucherStatus::UNUSED) {
-            return redirect()
-                ->route('admin.vouchers.index')
-                ->with('error', 'Only unused vouchers can be revoked.');
-        }
-
-        $voucher->update([
-            'status' => VoucherStatus::REVOKED,
-        ]);
-
-        return redirect()
-            ->route('admin.vouchers.index')
-            ->with('success', 'Voucher has been revoked.');
-    }
-
 
     public function downloadQr(GiftVoucher $voucher)
     {
@@ -246,23 +189,9 @@ class GiftVoucherController extends Controller
 
             // 7️⃣ User-friendly error
             return redirect()
-                ->route('admin.vouchers.index')
+                ->route('admin.resell-vouchers.index')
                 ->with('error', 'Failed to generate QR code. Please try again.');
         }
-    }
-
-    public function confirmPayout(VoucherRedemption $redemption)
-    {
-        if ($redemption->payout_status) {
-            return back()->with('error', 'Payout already confirmed.');
-        }
-
-        $redemption->update([
-            'payout_status' => true,
-            'payout_confirmed_at' => Carbon::now(),
-        ]);
-
-        return back()->with('success', 'Payout confirmed successfully.');
     }
 
     private function generateVoucherCode(): string

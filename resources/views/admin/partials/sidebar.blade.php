@@ -16,6 +16,13 @@
     </a>
 </li>
 
+<li>
+    <a href="{{ route('admin.resellers.index') }}"
+       class="{{ request()->routeIs('admin.resellers.*') ? 'active' : '' }}">
+        Resellers
+    </a>
+</li>
+
 
         <li>
             <a href="{{ route('admin.promotions.index') }}"
@@ -28,6 +35,13 @@
     <a href="{{ route('admin.vouchers.index') }}"
        class="{{ request()->routeIs('admin.vouchers.*') ? 'active' : '' }}">
         Gift Vouchers
+    </a>
+</li>
+
+        <li>
+    <a href="{{ route('admin.resell-vouchers.index') }}"
+       class="{{ request()->routeIs('admin.resell-vouchers.*') ? 'active' : '' }}">
+        Resell Vouchers
     </a>
 </li>
 

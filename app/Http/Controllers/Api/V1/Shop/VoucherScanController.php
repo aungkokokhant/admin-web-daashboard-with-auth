@@ -57,6 +57,10 @@ class VoucherScanController extends Controller
                     $message = 'Voucher has been revoked';
                     break;
 
+                case VoucherStatus::DEACTIVATE:
+                    $message = 'Voucher is currently deactivated';
+                    break;
+
                 default:
                     $message = 'Voucher cannot be used';
             }

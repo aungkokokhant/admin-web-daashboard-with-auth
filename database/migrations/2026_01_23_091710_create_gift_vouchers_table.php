@@ -32,12 +32,20 @@ return new class extends Migration {
                 ->constrained('shops')
                 ->nullOnDelete();
 
+            $table->timestamp('activated_at')->nullable();
             $table->timestamp('expires_at')->nullable();
+            $table->integer('available_days')->nullable();
 
             $table->foreignId('created_by_admin_id')
                 ->constrained('admins')
                 ->cascadeOnDelete();
 
+            $table->foreignId('activated_by_reseller_id')
+                ->nullable()
+                ->constrained('resellers')
+                ->cascadeOnDelete();
+
+            $table->boolean('re_sellable')->default(false);
             $table->timestamps();
 
             $table->index(['voucher_code', 'status']);

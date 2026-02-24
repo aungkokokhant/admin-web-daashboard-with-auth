@@ -20,6 +20,12 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->name('admin.')
                 ->group(base_path('routes/admin.php'));
 
+            // ✅ Reseller web routes
+            Route::middleware('web')
+                ->prefix('reseller')
+                ->name('reseller.')
+                ->group(base_path('routes/reseller.php'));
+
             // Shop API routes (versioned)
             Route::middleware('api')
                 ->prefix('api/v1/shop')

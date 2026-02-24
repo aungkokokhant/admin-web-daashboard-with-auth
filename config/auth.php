@@ -13,7 +13,6 @@ return [
         'passwords' => null,
     ],
 
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
@@ -22,7 +21,7 @@ return [
 
     'guards' => [
 
-        // Web guard now uses admins
+        // Admin Web Guard (Session Based)
         'web' => [
             'driver' => 'session',
             'provider' => 'admins',
@@ -33,13 +32,18 @@ return [
             'provider' => 'admins',
         ],
 
+        // ✅ NEW: Reseller Guard (Session Based)
+        'reseller' => [
+            'driver' => 'session',
+            'provider' => 'resellers',
+        ],
+
+        // Shop API Guard (Sanctum)
         'shop' => [
             'driver' => 'sanctum',
             'provider' => 'shops',
         ],
-
     ],
-
 
     /*
     |--------------------------------------------------------------------------
@@ -55,14 +59,18 @@ return [
             'model' => App\Models\Admin::class,
         ],
 
+        // ✅ NEW: Reseller accounts
+        'resellers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Reseller::class,
+        ],
+
         // Shop accounts
         'shops' => [
             'driver' => 'eloquent',
             'model' => App\Models\Shop::class,
         ],
-
     ],
-
 
     /*
     |--------------------------------------------------------------------------

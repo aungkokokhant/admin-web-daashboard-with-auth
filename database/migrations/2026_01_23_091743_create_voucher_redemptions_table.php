@@ -24,6 +24,8 @@ return new class extends Migration {
 
             $table->timestamp('redeemed_at')->useCurrent();
             $table->string('transaction_ref')->nullable();
+            $table->boolean('payout_status')->default(false);
+            $table->timestamp('payout_confirmed_at')->nullable();
 
             $table->unique('voucher_id');
         });

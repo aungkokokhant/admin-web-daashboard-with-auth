@@ -7,7 +7,8 @@ use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\GiftVoucherController;
-use App\Http\Controllers\Api\V1\Shop\ReportController;
+use App\Http\Controllers\Admin\ResellerController;
+use App\Http\Controllers\Admin\ResellVoucherController;
 use App\Models\Promotion;
 use App\Models\Shop;
 use Carbon\Carbon;
@@ -123,6 +124,28 @@ Route::middleware('auth:admin')->group(function () {
             '/{voucher}/download-qr',
             [GiftVoucherController::class, 'downloadQr']
         )->name('download-qr');
+
+        Route::post(
+            '/redemptions/{redemption}/confirm-payout',
+            [GiftVoucherController::class, 'confirmPayout']
+        )->name('redemptions.confirm-payout');
+    });
+
+    Route::prefix('resell-vouchers')->name('resell-vouchers.')->group(function () {
+
+        Route::get('/', [ResellVoucherController::class, 'index'])
+            ->name('index');
+
+        Route::get('/create', [ResellVoucherController::class, 'create'])
+            ->name('create');
+
+        Route::post('/', [ResellVoucherController::class, 'store'])
+            ->name('store');
+
+        Route::get(
+            '/{voucher}/download-qr',
+            [ResellVoucherController::class, 'downloadQr']
+        )->name('download-qr');
     });
 
     Route::prefix('reports')->name('reports.')->group(function () {
@@ -134,5 +157,23 @@ Route::middleware('auth:admin')->group(function () {
             '/voucher-redemptions/shop/{shop}',
             [AdminReportController::class, 'shopVoucherRedemptions']
         )->name('voucher-redemptions.shop');
+    });
+
+    Route::prefix('resellers')->name('resellers.')->group(function () {
+
+        Route::get('/', [ResellerController::class, 'index'])
+            ->name('index');
+
+        Route::get('/create', [ResellerController::class, 'create'])
+            ->name('create');
+
+        Route::post('/', [ResellerController::class, 'store'])
+            ->name('store');
+
+        Route::get('/{reseller}/edit', [ResellerController::class, 'edit'])
+            ->name('edit');
+
+        Route::put('/{reseller}', [ResellerController::class, 'update'])
+            ->name('update');
     });
 });

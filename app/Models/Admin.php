@@ -42,4 +42,9 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(GiftVoucher::class, 'created_by_admin_id');
     }
+
+    public function resellers()
+    {
+        return $this->hasMany(Reseller::class, 'created_by_admin_id');
+    }
 }

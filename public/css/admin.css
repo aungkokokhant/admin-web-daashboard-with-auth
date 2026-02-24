@@ -506,6 +506,11 @@ body {
     color: #1e40af;
 }
 
+.admin-badge-deactivate {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
 .admin-badge-redeemed {
     background: #ede9fe;
     color: #5b21b6;
@@ -525,23 +530,16 @@ body {
    REPORTS
 ================================ */
 
-.admin-report-grid {
+/* .admin-report-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
-}
+} */
 
-.admin-report-card {
-    background: #ffffff;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-}
-
-.admin-report-card h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
+.admin-report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 24px;
 }
 
 .admin-report-code {
@@ -601,25 +599,6 @@ body {
     font-size: 26px;
     font-weight: 800;
     margin-top: 6px;
-}
-
-/* ===============================
-   SHOP REPORT CARDS
-================================ */
-
-.admin-report-card {
-    border-radius: 14px;
-    padding: 20px;
-    background: #ffffff;
-    border: 1px solid var(--border);
-    transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease;
-}
-
-.admin-report-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
 }
 
 .admin-report-metrics strong.blue {
@@ -693,4 +672,309 @@ body {
 }
 .admin-voucher-amounts .green {
     color: #16a34a;
+}
+
+/* Reseller Status Badge */
+.admin-badge-active {
+    background: #16a34a;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.admin-badge-inactive {
+    background: #dc2626;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+/* Validation Error */
+.admin-error {
+    color: #dc2626;
+    font-size: 12px;
+}
+
+/* ================= REPORT FILTER ================= */
+
+.report-filter-card {
+    padding: 20px 24px;
+    margin-bottom: 28px;
+}
+
+.report-filter-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.report-filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+}
+
+.report-filter-group label {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--muted);
+}
+
+.report-filter-group input {
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.report-filter-group input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.button-group {
+    justify-content: flex-end;
+}
+
+.admin-btn-primary {
+    background: var(--primary);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.admin-btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Empty state */
+.empty-state {
+    padding: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+/* ===============================
+   SHOP REPORT CARDS
+================================ */
+
+.admin-report-card {
+    display: block;
+    text-decoration: none !important;
+    color: inherit;
+
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
+}
+
+/* Hover effect */
+.admin-report-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+    border-color: var(--primary);
+}
+
+/* Remove underline from everything inside */
+.admin-report-card * {
+    text-decoration: none !important;
+}
+
+/* Shop Name */
+.admin-report-card h3 {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Shop Code */
+.admin-report-code {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 14px;
+}
+
+/* ===============================
+   PAYOUT BUTTON
+================================ */
+
+.admin-btn-payout {
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-btn-payout:hover {
+    background: #15803d;
+    transform: translateY(-1px);
+}
+
+.payout-badge {
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #16a34a;
+}
+
+/* ===============================
+   VOUCHER FOOTER (REF + PAYOUT)
+================================ */
+
+.admin-voucher-footer {
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.voucher-transaction {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.voucher-payout-action form {
+    margin: 0;
+}
+
+/* Make it responsive */
+@media (max-width: 576px) {
+    .admin-voucher-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* ===============================
+   VOUCHER TYPE BADGE
+================================ */
+
+.admin-voucher-code-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.voucher-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+}
+
+.voucher-badge.resellable {
+    background: rgba(2, 132, 199, 0.1);
+    color: #0284c7;
+}
+
+.voucher-badge.non-resellable {
+    background: rgba(234, 88, 12, 0.1);
+    color: #ea580c;
+}
+
+/* Extended Summary Layout */
+.extended-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 36px;
+}
+
+/* Extra Colors */
+.admin-stat-card.sky {
+    border-top: 4px solid #0ea5e9;
+}
+.admin-stat-card.indigo {
+    border-top: 4px solid #6366f1;
+}
+.admin-stat-card.emerald {
+    border-top: 4px solid #10b981;
+}
+.admin-stat-card.red {
+    border-top: 4px solid #ef4444;
+}
+
+@media (max-width: 992px) {
+    .extended-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .extended-summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===============================
+   SHOP CARD EXTENDED METRICS
+================================ */
+
+.shop-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+}
+
+.shop-warning-badge {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.admin-report-metrics.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.admin-report-metrics.second-row {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .admin-report-metrics.grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .admin-report-metrics.grid-4 {
+        grid-template-columns: 1fr;
+    }
 }

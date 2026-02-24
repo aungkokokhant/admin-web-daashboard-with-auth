@@ -9,6 +9,7 @@ enum VoucherStatus: string
     case REDEEMED = 'redeemed';
     case EXPIRED = 'expired';
     case REVOKED = 'revoked';
+    case DEACTIVATE = 'deactivate';
 
     public static function values(): array
     {
