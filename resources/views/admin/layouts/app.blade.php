@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'Gift Voucher System Admin')</title>
+    <title>@yield('title', 'Kitchen Management System Admin')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {{-- Global Admin CSS --}}
